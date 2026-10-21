@@ -1,0 +1,182 @@
+/* ============ MINI ERP 95: retro design system ============ */
+:root {
+  --desktop: #008080;
+  --face: #c0c0c0;
+  --hi: #ffffff;
+  --light: #dfdfdf;
+  --shadow: #808080;
+  --dark: #000000;
+  --title-a: #000080;
+  --title-b: #1084d0;
+  --paper: #ffffff;
+  --ink: #000000;
+  --folder: #ffe97a;
+  --ok: #007a00;
+  --bad: #c00000;
+  --warn: #8a6d00;
+  --blue: #0000c8;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  font-family: var(--font-body), "Courier New", monospace;
+  font-size: 20px;
+  line-height: 1.15;
+  color: var(--ink);
+  background-color: var(--desktop);
+  background-image:
+    linear-gradient(45deg, rgba(0, 0, 0, 0.07) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.07) 75%),
+    linear-gradient(45deg, rgba(0, 0, 0, 0.07) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.07) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}
+
+h1, h2, h3 { font-family: var(--font-head), monospace; font-weight: normal; margin: 0 0 12px; line-height: 1.5; }
+h1 { font-size: 14px; }
+h2 { font-size: 11px; }
+small { font-size: 16px; color: #333; }
+a { color: var(--blue); }
+
+/* ---------- bevels ---------- */
+.raised {
+  background: var(--face);
+  border: 2px solid;
+  border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+  box-shadow: inset -1px -1px var(--shadow), inset 1px 1px var(--light);
+}
+.sunken {
+  background: var(--paper);
+  border: 2px solid;
+  border-color: var(--shadow) var(--hi) var(--hi) var(--shadow);
+  box-shadow: inset 1px 1px var(--dark), inset -1px -1px var(--light);
+}
+
+/* ---------- window ---------- */
+.win { background: var(--face); border: 2px solid; border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+  box-shadow: inset -1px -1px var(--shadow), inset 1px 1px var(--light), 4px 4px 0 rgba(0, 0, 0, 0.35); padding: 3px; margin-bottom: 16px; }
+.win-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 3px 4px;
+  background: linear-gradient(90deg, var(--title-a), var(--title-b)); color: #fff;
+  font-family: var(--font-head), monospace; font-size: 10px; line-height: 1.4; }
+.win-title span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.win-ctrls { display: flex; gap: 2px; flex-shrink: 0; }
+.win-ctrls i { font-style: normal; width: 18px; height: 16px; display: grid; place-items: center; font-size: 9px;
+  color: #000; background: var(--face); border: 2px solid; border-color: var(--hi) var(--dark) var(--dark) var(--hi); }
+.win-body { padding: 12px; }
+.win-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 8px; border-bottom: 2px solid var(--shadow); }
+.win-toolbar .grow { flex: 1; min-width: 160px; }
+
+/* ---------- buttons ---------- */
+.btn { font: inherit; font-size: 20px; color: var(--ink); cursor: pointer; padding: 4px 14px; min-height: 34px;
+  background: var(--face); border: 2px solid; border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+  box-shadow: inset -1px -1px var(--shadow), inset 1px 1px var(--light); text-transform: uppercase; letter-spacing: 0.5px; }
+.btn:hover:not(:disabled) { background: #d4d4d4; }
+.btn:active:not(:disabled) { border-color: var(--dark) var(--hi) var(--hi) var(--dark);
+  box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--light); padding: 5px 13px 3px 15px; }
+.btn:focus-visible { outline: 2px dotted var(--dark); outline-offset: -6px; }
+.btn:disabled { color: var(--shadow); text-shadow: 1px 1px var(--hi); cursor: not-allowed; }
+.btn.primary { outline: 2px solid var(--dark); font-weight: bold; }
+.btn.danger { color: var(--bad); }
+.btn.small { min-height: 26px; padding: 0 8px; font-size: 17px; }
+
+/* ---------- forms ---------- */
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field > span { font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; }
+.field small { color: var(--bad); }
+input, select, textarea { font: inherit; font-size: 20px; padding: 4px 6px; min-height: 34px; width: 100%; color: var(--ink);
+  background: var(--paper); border: 2px solid; border-color: var(--shadow) var(--hi) var(--hi) var(--shadow);
+  box-shadow: inset 1px 1px var(--dark); border-radius: 0; }
+input:focus, select:focus, textarea:focus { outline: 2px dotted var(--blue); outline-offset: 1px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* ---------- table ---------- */
+.scroll { overflow-x: auto; }
+table.grid { border-collapse: collapse; width: 100%; background: var(--paper); }
+.grid th { position: sticky; top: 0; text-align: left; font-weight: normal; text-transform: uppercase; font-size: 17px; letter-spacing: 0.5px;
+  padding: 5px 10px; white-space: nowrap; background: var(--face); border: 2px solid; border-color: var(--hi) var(--shadow) var(--shadow) var(--hi); }
+.grid td { padding: 5px 10px; border-bottom: 1px dashed #9a9a9a; vertical-align: middle; }
+.grid tbody tr:hover { background: #fff7b8; }
+.grid .num { text-align: right; white-space: nowrap; }
+.grid .actions { white-space: nowrap; text-align: right; }
+
+/* ---------- badge / stat / alerts ---------- */
+.badge { display: inline-block; padding: 0 8px; font-size: 17px; text-transform: uppercase; border: 2px solid var(--dark); background: #fff; }
+.badge.ok { background: #b9f5b9; }
+.badge.bad { background: #ffb3b3; }
+.badge.warn { background: var(--folder); }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.stat { padding: 10px 12px; }
+.stat small { display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat b { display: block; font-size: 30px; font-weight: normal; margin-top: 4px; }
+.stat.good b { color: var(--ok); }
+.stat.loss b { color: var(--bad); }
+
+.msg { display: flex; gap: 12px; align-items: center; padding: 10px 12px; margin-bottom: 12px; background: var(--paper);
+  border: 2px solid var(--dark); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3); }
+.msg .icon { font-size: 28px; }
+.msg.error { background: #fff0f0; border-color: var(--bad); }
+.msg.success { background: #effff0; border-color: var(--ok); }
+.empty { text-align: center; padding: 28px 12px; color: #444; }
+.empty .icon { font-size: 40px; display: block; margin-bottom: 6px; }
+
+/* ---------- loading progress bar (blue blocks) ---------- */
+.loading { padding: 24px 12px; text-align: center; }
+.progress { display: inline-flex; gap: 3px; padding: 4px; margin-top: 10px; background: var(--paper);
+  border: 2px solid; border-color: var(--shadow) var(--hi) var(--hi) var(--shadow); box-shadow: inset 1px 1px var(--dark); }
+.progress i { width: 14px; height: 20px; background: var(--blue); opacity: 0.12; animation: blocks 1.2s steps(1) infinite; }
+.progress i:nth-child(1) { animation-delay: 0s; } .progress i:nth-child(2) { animation-delay: 0.1s; }
+.progress i:nth-child(3) { animation-delay: 0.2s; } .progress i:nth-child(4) { animation-delay: 0.3s; }
+.progress i:nth-child(5) { animation-delay: 0.4s; } .progress i:nth-child(6) { animation-delay: 0.5s; }
+.progress i:nth-child(7) { animation-delay: 0.6s; } .progress i:nth-child(8) { animation-delay: 0.7s; }
+@keyframes blocks { 0% { opacity: 0.12; } 8% { opacity: 1; } 100% { opacity: 1; } }
+
+/* ---------- bar chart ---------- */
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 180px; padding: 10px; }
+.bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 4px; min-width: 0; }
+.bar .fill { width: 100%; min-height: 3px; background: repeating-linear-gradient(0deg, var(--blue) 0 10px, #fff 10px 12px); border: 2px solid var(--dark); }
+.bar small { font-size: 15px; white-space: nowrap; }
+.bar .val { font-size: 15px; }
+
+/* ---------- app shell ---------- */
+.shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 16px; padding: 16px 16px 64px; max-width: 1400px; margin: 0 auto; align-items: start; }
+.nav { display: flex; flex-direction: column; gap: 6px; }
+.nav a { display: flex; align-items: center; gap: 10px; padding: 6px 10px; text-decoration: none; color: var(--ink); font-size: 22px;
+  border: 2px solid transparent; }
+.nav a:hover { background: #fff7b8; }
+.nav a.active { background: var(--title-a); color: #fff; border: 2px dotted #fff; }
+.nav .ico { font-size: 24px; width: 28px; text-align: center; }
+
+.taskbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; align-items: center; gap: 8px; padding: 4px 6px;
+  background: var(--face); border-top: 2px solid var(--hi); box-shadow: 0 -1px 0 var(--light); }
+.taskbar .start { font-family: var(--font-head), monospace; font-size: 10px; display: flex; align-items: center; gap: 6px; }
+.taskbar .user { flex: 1; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 18px; }
+.taskbar .clock { padding: 2px 10px; font-size: 18px; border: 2px solid; border-color: var(--shadow) var(--hi) var(--hi) var(--shadow); }
+
+.center-screen { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.login-box { width: min(440px, 100%); }
+.tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+.tabs .btn { flex: 1; }
+.tabs .btn.on { border-color: var(--dark) var(--hi) var(--hi) var(--dark); background: #d8d8d8; }
+
+.line { display: grid; grid-template-columns: minmax(0, 3fr) 90px 120px 120px 40px; gap: 8px; align-items: start; margin-bottom: 8px; }
+.line .sub { align-self: center; text-align: right; padding-top: 6px; }
+.line-head { font-size: 16px; text-transform: uppercase; color: #333; }
+.line-error { grid-column: 1 / -1; color: var(--bad); font-size: 17px; margin-top: -4px; }
+.total-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding: 8px 12px; }
+.total-bar b { font-size: 30px; font-weight: normal; }
+
+@media (max-width: 860px) {
+  body { font-size: 19px; }
+  .shell { grid-template-columns: 1fr; padding: 10px 10px 64px; }
+  .sidebar .win-body { padding: 4px; }
+  .nav { flex-direction: row; overflow-x: auto; gap: 4px; }
+  .nav a { flex-shrink: 0; padding: 4px 10px; font-size: 19px; }
+  .taskbar .user { display: none; }
+  .taskbar .clock { margin-left: auto; }
+  .line { grid-template-columns: 1fr 1fr; }
+  .line > :first-child { grid-column: 1 / -1; }
+  .line-head { display: none; }
+}
