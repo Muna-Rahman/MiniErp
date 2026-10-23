@@ -50,22 +50,52 @@ export default function TransactionPage({ kind }) {
   const [ok, setOk] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const load = useCallback(async () => {
+  const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+
+  // products + suppliers feed the form (and show fresh stock levels)
+  const loadLookups = useCallback(async () => {
     try {
-      setLoadError("");
-      const [p, s, h] = await Promise.all([api("/products"), isSale ? [] : api("/suppliers"), api(cfg.endpoint)]);
+      const [p, s] = await Promise.all([api("/products"), isSale ? [] : api("/suppliers")]);
       setProducts(p);
       setSuppliers(s);
-      setHistory(h);
+    } catch (e) {
+      setLoadError(e.message);
+    }
+  }, [isSale]);
+
+  // history list honours the search box and the payment filter
+  const loadHistory = useCallback(async () => {
+    try {
+      setLoadError("");
+      const params = new URLSearchParams({ q, status: statusFilter });
+      setHistory(await api(`${cfg.endpoint}?${params}`));
     } catch (e) {
       setLoadError(e.message);
       setHistory((h) => h ?? []);
     }
-  }, [cfg.endpoint, isSale]);
+  }, [cfg.endpoint, q, statusFilter]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    loadLookups();
+  }, [loadLookups]);
+
+  useEffect(() => {
+    const t = setTimeout(loadHistory, 250);
+    return () => clearTimeout(t);
+  }, [loadHistory]);
+
+  const load = () => Promise.all([loadLookups(), loadHistory()]);
+
+  async function markPaid(row) {
+    try {
+      await api(`${cfg.endpoint}/${row._id}/pay`, { method: "PATCH" });
+      setOk(`${row.number} marked as paid.`);
+      await loadHistory();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
   const byId = useMemo(() => new Map(products.map((p) => [p._id, p])), [products]);
 
@@ -178,13 +208,34 @@ export default function TransactionPage({ kind }) {
         </form>
       </Window>
 
-      <Window title={cfg.historyTitle} icon="📜">
+      <Window
+        title={cfg.historyTitle}
+        icon="📜"
+        toolbar={
+          <>
+            <input className="grow" placeholder={isSale ? "Search invoice or customer..." : "Search purchase number..."} value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search" />
+            <select style={{ width: "auto" }} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} aria-label="Filter by payment">
+              <option value="">All payments</option>
+              <option value="paid">Paid</option>
+              <option value="due">Due</option>
+            </select>
+          </>
+        }
+      >
         {history === null ? (
           <Loading />
         ) : history.length === 0 ? (
-          <Empty text={`No ${isSale ? "sales" : "purchases"} recorded yet.`} />
+          <Empty text={q || statusFilter ? "Nothing matches your search or filter." : `No ${isSale ? "sales" : "purchases"} recorded yet.`} />
         ) : (
-          <DataTable columns={columns} rows={history} />
+          <DataTable
+            columns={columns}
+            rows={history}
+            actions={(row) =>
+              row.paymentStatus === "due" ? (
+                <Button size="small" onClick={() => markPaid(row)}>Mark paid</Button>
+              ) : null
+            }
+          />
         )}
       </Window>
     </>

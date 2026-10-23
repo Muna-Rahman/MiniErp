@@ -9,7 +9,15 @@ router.get("/", async (req, res) => {
   const q = String(req.query.q || "").trim();
   const rx = new RegExp(escapeRegex(q), "i");
   const filter = q ? { $or: [{ number: rx }, { customerName: rx }] } : {};
+  if (["paid", "due"].includes(req.query.status)) filter.paymentStatus = req.query.status;
   res.json(await Sale.find(filter).sort({ createdAt: -1 }).limit(100));
+});
+
+// Customer paid an outstanding (due) invoice
+router.patch("/:id/pay", async (req, res) => {
+  const sale = await Sale.findByIdAndUpdate(req.params.id, { paymentStatus: "paid" }, { new: true });
+  if (!sale) throw httpError(404, "Sale not found");
+  res.json(sale);
 });
 
 // Sale: atomically take stock for every line (only if enough is available),

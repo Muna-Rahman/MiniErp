@@ -8,7 +8,15 @@ const router = Router();
 router.get("/", async (req, res) => {
   const q = String(req.query.q || "").trim();
   const filter = q ? { number: new RegExp(escapeRegex(q), "i") } : {};
+  if (["paid", "due"].includes(req.query.status)) filter.paymentStatus = req.query.status;
   res.json(await Purchase.find(filter).populate("supplier", "name").sort({ createdAt: -1 }).limit(100));
+});
+
+// We paid a supplier for an outstanding (due) purchase
+router.patch("/:id/pay", async (req, res) => {
+  const purchase = await Purchase.findByIdAndUpdate(req.params.id, { paymentStatus: "paid" }, { new: true });
+  if (!purchase) throw httpError(404, "Purchase not found");
+  res.json(purchase);
 });
 
 // Purchase: record the order, then ADD the received quantity to each product's stock.
