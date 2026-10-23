@@ -19,6 +19,18 @@ app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 // Better Auth must be mounted BEFORE express.json()
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
+// Connect to MongoDB once per instance (serverless-friendly: reused across requests)
+let dbReady;
+const ensureDB = () => (dbReady ??= connectDB().catch((err) => { dbReady = undefined; throw err; }));
+app.use(async (req, res, next) => {
+  try {
+    await ensureDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.use(express.json());
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
@@ -46,10 +58,15 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message: status === 500 ? "Something went wrong on the server" : err.message });
 });
 
-const port = process.env.PORT || 5000;
-connectDB()
-  .then(() => app.listen(port, () => console.log(`API running on http://localhost:${port}`)))
-  .catch((err) => {
-    console.error("Failed to start:", err.message);
-    process.exit(1);
-  });
+// Vercel runs the exported app as a serverless function; locally we start a normal server.
+if (!process.env.VERCEL) {
+  const port = process.env.PORT || 5000;
+  ensureDB()
+    .then(() => app.listen(port, () => console.log(`API running on http://localhost:${port}`)))
+    .catch((err) => {
+      console.error("Failed to start:", err.message);
+      process.exit(1);
+    });
+}
+
+export default app;
