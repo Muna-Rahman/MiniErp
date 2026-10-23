@@ -9,6 +9,11 @@ export const metadata = {
   description: "Retro-styled wholesale ERP: purchases, stock, sales and expenses.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${body.variable} ${head.variable}`}>
