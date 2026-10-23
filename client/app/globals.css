@@ -180,3 +180,17 @@ table.grid { border-collapse: collapse; width: 100%; background: var(--paper); }
   .line > :first-child { grid-column: 1 / -1; }
   .line-head { display: none; }
 }
+@media (max-width: 480px) {
+  body { font-size: 18px; }
+  .shell { padding: 6px 6px 64px; }
+  .win-body { padding: 8px; }
+  .win-toolbar .grow { min-width: 100%; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { padding: 8px; }
+  .stat b { font-size: 22px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .line { grid-template-columns: 1fr; }
+  .grid th, .grid td { padding: 4px 6px; }
+  .total-bar b { font-size: 24px; }
+  .taskbar .start { font-size: 9px; }
+}
