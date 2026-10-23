@@ -3,6 +3,7 @@
 A small distributor's ERP with a retro Windows 95 interface. It manages products, suppliers, purchases, sales and expenses, and turns them into a live dashboard.
 
 **Live demo:** https://mini-erp-web-two.vercel.app
+
 **API:** https://mini-erp-api-chi.vercel.app (`/api/health`)
 
 **Demo login:** `admin@minierp.dev` / `admin12345`
