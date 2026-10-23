@@ -100,19 +100,7 @@ Create **two** Vercel projects from the same GitHub repo:
 - Deploy by pushing to `main`. `API_URL` is baked in at build time, so redeploy the web project after changing it.
 - Seed the production database once: put the production `MONGODB_URI` in `server/.env` and run `npm run seed`.
 
-### Troubleshooting
-| Symptom | Cause / fix |
-|---|---|
-| `ERR_TOO_MANY_REDIRECTS` on `/api/auth/...` | `API_URL` points at the web app itself or uses `http://`. Set it to the API's `https://` URL and rebuild |
-| 500 on `/api/auth/*`, log says `Invalid base URL` | `BETTER_AUTH_URL` is missing `https://` |
-| Build fails with `Root Directory "server" does not exist` | Deploy through GitHub, or run the CLI from the repo root, not from inside `server/` |
-| "Invalid email or password" with the demo login | Production database not seeded; run `npm run seed` |
 
-## Demo script (2–3 min)
-1. Dashboard: note stock value and revenue.
-2. Purchases: receive 40 × Soybean Oil 5L → stock increases.
-3. Sales: sell 10 × Soybean Oil 5L → try selling more than stock to see validation.
-4. Dashboard: revenue, profit, stock value and chart have changed.
 
 ## Known limitations
 - Stripe payments are not wired yet
