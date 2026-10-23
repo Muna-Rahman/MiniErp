@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 
-// Accept "my-app.vercel.app" or "https://my-app.vercel.app/" and always return a clean origin.
+
 const normalizeUrl = (v) => {
   if (!v) return undefined;
   let url = v.trim().replace(/\/+$/, "");
